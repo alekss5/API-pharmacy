@@ -31,5 +31,7 @@
   },
   "devDependencies": {
     "sinon": "^19.0.2"
-  }
+  },
+  "proxy": "https://api-pharmacy-six.vercel.app"
+
 }
