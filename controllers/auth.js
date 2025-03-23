@@ -17,7 +17,6 @@ exports.signup = async (req, res,next) => {
     error.statusCode = 422;
     error.message = errorMessages; // Set the error message with the combined validation messages
     
-    console.log('Validation Error:', error.message);
     return next(error); // Pass the error to the error-handling middleware
   }
 
@@ -32,9 +31,6 @@ exports.signup = async (req, res,next) => {
     const newUser = new User({
       name,
       lastName,
-      age,
-      salary,
-      jobSector,
       email,
       password: hashedPassword,
     });
@@ -48,7 +44,6 @@ exports.signup = async (req, res,next) => {
     };
 
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '30d' });
-    console.log("user registered  successfully");
 
     res.status(201).json({ token });
   } catch (err) {
@@ -87,7 +82,6 @@ exports.login = async (req, res, next) => {
       "privatekey",
       { expiresIn: "30d" }
     );
-    console.log(loadedUser)
     res.status(200).json({
       token: token,
       userData: loadedUser      

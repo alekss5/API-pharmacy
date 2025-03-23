@@ -10,12 +10,14 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const authRoutes = require("./routes/auth");
-const paymentRoutes = require("./routes/payment");
+const productRoutes = require("./routes/product");
 
 app.use("/auth", authRoutes);
-app.use("/payment",paymentRoutes)
+app.use("/product", productRoutes);
+app.use('/uploads', express.static('./uploads'));
+
 app.use((error, req, res, next) => {
-  console.log('Error: ' + error);
+
   const status = error.statusCode || 500; // Fallback to 500 if no statusCode is set
   const message = error.message || 'An unknown error occurred';
   const data = error.data;
