@@ -4,10 +4,10 @@ const fs = require('fs');
 // Create a new product
 exports.addProduct = async (req, res) => {
   try {
-    const { name, description, price, quantity, manufacturer, packaging,category } = req.body;
+    const { name, description, price, quantity, manufacturer, packaging,category,imagePath } = req.body;
 
     // Save the file path to the database (relative path)
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : '';
+   // const imagePath = req.file ? `/uploads/${req.file.filename}` : '';
 
     const newProduct = new Product({
       name,
@@ -85,13 +85,13 @@ exports.getProductById = async (req, res) => {
 // Update a product by ID
 exports.updateProduct = async (req, res) => {
   try {
-    const { name, description, price, quantity, manufacturer, packaging,category } = req.body;
-    let updatedFields = { name, description, price, quantity, manufacturer, packaging,category };
+    const { name, description, price, quantity, manufacturer, packaging,category,imagePath } = req.body;
+    let updatedFields = { name, description, price, quantity, manufacturer, packaging,category,imagePath };
 
-    if (req.file) {
-      // If a new image is uploaded, update the imagePath
-      updatedFields.imagePath = `/uploads/${req.file.filename}`;
-    }
+    // if (req.file) {
+    //   // If a new image is uploaded, update the imagePath
+    //   updatedFields.imagePath = `/uploads/${req.file.filename}`;
+    // }
 
     const updatedProduct = await Product.findByIdAndUpdate(req.params.id, updatedFields, { new: true });
 
@@ -112,14 +112,14 @@ exports.deleteProduct = async (req, res) => {
       return res.status(404).json({ error: 'Product not found' });
     }
 
-    if (product.imagePath) {
-      const imagePath = path.resolve(__dirname, '..', product.imagePath.replace(/^\/+/, ''));
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
-      } else {
-        console.error('Image file not found at:', imagePath);
-      }
-    }
+    // if (product.imagePath) {
+    //   const imagePath = path.resolve(__dirname, '..', product.imagePath.replace(/^\/+/, ''));
+    //   if (fs.existsSync(imagePath)) {
+    //     fs.unlinkSync(imagePath);
+    //   } else {
+    //     console.error('Image file not found at:', imagePath);
+    //   }
+    // }
 
     res.status(200).json({ message: 'Product deleted successfully' });
   } catch (error) {
